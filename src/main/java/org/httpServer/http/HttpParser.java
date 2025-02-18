@@ -50,7 +50,14 @@ public class HttpParser {
                     if(!methodParsed || !requestTargetParsed){
                         throw new HttpParsingException(HttpStatusCode.CLIENT_ERROR_400_BAD_REQUEST);
                     }
+                    try {
+                        request.setHTTPVersion(processingDataBuffer.toString());
+                    } catch (BadHttpParsingException e) {
+                        throw new HttpParsingException(HttpStatusCode.CLIENT_ERROR_400_BAD_REQUEST);
+                    }
                     return;
+                } else {
+                    throw new HttpParsingException(HttpStatusCode.CLIENT_ERROR_400_BAD_REQUEST);
                 }
             }
             if(_byte == SP){
@@ -60,6 +67,7 @@ public class HttpParser {
                     methodParsed = true;
                 }else if(!requestTargetParsed){
                     LOGGER.debug("Request Line REQUEST TARGET to Process: {}",processingDataBuffer);
+                    request.setRequestTarget(processingDataBuffer.toString());
                     requestTargetParsed = true;
                 } else {
                     throw new HttpParsingException(HttpStatusCode.CLIENT_ERROR_400_BAD_REQUEST);
