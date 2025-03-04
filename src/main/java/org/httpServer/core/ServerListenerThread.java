@@ -1,5 +1,6 @@
 package org.httpServer.core;
 
+import org.httpServer.core.io.WebRootNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.IOException;
@@ -28,12 +29,12 @@ public class ServerListenerThread extends Thread {
 
                 LOGGER.info("Connection is accepted: " + socket.getInetAddress());
 
-                HttpWorkerConnectionThread httpWorkerConnectionThread = new HttpWorkerConnectionThread(socket);
+                HttpWorkerConnectionThread httpWorkerConnectionThread = new HttpWorkerConnectionThread(socket,webroot);
                 httpWorkerConnectionThread.start();
 
             }
         }
-        catch (Exception e){
+        catch (Exception | WebRootNotFoundException e){
             LOGGER.error("A problem with setting socket has occurred" + e);
         }finally{
             if(serverSocket != null){

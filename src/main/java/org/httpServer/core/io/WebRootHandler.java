@@ -10,7 +10,7 @@ public class WebRootHandler {
 
     private File webRoot;
 
-    WebRootHandler(String webRootPath) throws WebRootNotFoundException {
+    public WebRootHandler(String webRootPath) throws WebRootNotFoundException {
         webRoot = new File(webRootPath);
         if(!webRoot.exists() || !webRoot.isDirectory()){
             throw new WebRootNotFoundException("Webroot provided does not exists or is not a folder");
